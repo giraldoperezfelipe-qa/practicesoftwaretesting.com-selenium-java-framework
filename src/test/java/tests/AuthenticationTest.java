@@ -8,7 +8,6 @@ import pages.HomePage;
 import java.util.Objects;
 
 import static constants.Constants.AUTH_LOGIN_PATH;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AuthenticationTest extends BaseTest {
