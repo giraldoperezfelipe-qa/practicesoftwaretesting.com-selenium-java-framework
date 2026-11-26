@@ -2,14 +2,16 @@ package tests;
 
 import driver.BaseTest;
 import org.junit.jupiter.api.Test;
-import pages.AuthenticationPage;
 import pages.DashboardPage;
 import pages.HomePage;
+import pages.components.NavigationMenu;
 
 import java.util.Objects;
 
 import static constants.Constants.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class AuthenticationTest extends BaseTest {
 
@@ -27,32 +29,29 @@ public class AuthenticationTest extends BaseTest {
         );
     }
 
+    public void assertStringEqualsOtherString
+            (String firstString, String secondString, String errorMessage) {
+        assertEquals(Objects
+                .requireNonNull(firstString), secondString, errorMessage);
+    }
+
     @Test
-    public void doLoginProcessWithEmailAndPasswordByUI() {
+    public void doLoginProcessForAdmin() {
         HomePage homePage = new HomePage(driver);
         DashboardPage dashboardPage = new DashboardPage(driver);
-        AuthenticationPage authenticationPage = new AuthenticationPage(driver);
-
-        String currentUrl;
-        homePage.goToBasePageWithURL("");
-        homePage.clickLoginButton();
-        authenticationPage.waitForLoginFormToBeVisible();
-
-        currentUrl = getCurrentURL();
-        assertStringContainsOtherString
-                (currentUrl, AUTH_LOGIN_PATH, URL_NOT_CONTAINED_ERROR + currentUrl);
-
-        authenticationPage.fillAndSendLoginForm
-                ("admin@practicesoftwaretesting.com", "welcome01");
-
-        /*
+        NavigationMenu navigationMenu = new NavigationMenu(driver);
+        String sessionToken = homePage.loginByAPIAndRetrieveSessionToken();
+        homePage.goToHomePage();
+        homePage.setSessionTokenInBrowser(sessionToken);
+        dashboardPage.goToDashboard();
         dashboardPage.waitForSalesChartToBeVisible();
         dashboardPage.waitForLatestOrdersTableToBeVisible();
 
-        currentUrl = getCurrentURL();
+        String currentUrl = getCurrentURL();
         assertStringContainsOtherString
                 (currentUrl, ADMIN_DASHBOARD_PATH, URL_NOT_CONTAINED_ERROR + currentUrl);
 
-         */
+        assertStringEqualsOtherString
+                ("John Doe", navigationMenu.retrieveUsernameInMenu(), USERNAME_DOES_NOT_MATCH);
     }
 }

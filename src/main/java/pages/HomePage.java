@@ -11,6 +11,10 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
+    public void goToHomePage() {
+        goToBasePageWithPath("");
+    }
+
     public void clickLoginButton() {
         explicitWait().until(ExpectedConditions.visibilityOfElementLocated(loginButton));
         driver.findElement(loginButton).click();

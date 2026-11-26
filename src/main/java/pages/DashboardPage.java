@@ -11,6 +11,10 @@ public class DashboardPage extends BasePage {
         super(driver);
     }
 
+    public void goToDashboard() {
+        goToBasePageWithPath("/admin/dashboard");
+    }
+
     public void waitForSalesChartToBeVisible() {
         waitForElementToBeVisible(salesChart);
     }

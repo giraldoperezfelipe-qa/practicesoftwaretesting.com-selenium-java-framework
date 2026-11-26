@@ -1,6 +1,8 @@
 package pages;
 
+import helpers.ApiAuth;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
@@ -17,14 +19,16 @@ public abstract class BasePage {
         this.driver = driver;
     }
 
-    public void goToBasePageWithURL(String path) {
+    public void goToBasePageWithPath(String path) {
         driver.get(getBaseUrl() + path);
     }
 
+    //Override explicit wait, so it can receive no arguments
     protected Wait<WebDriver> explicitWait() {
         return explicitWait(2);
     }
 
+    //Override explicit wait, so it can receive custom "seconds" argument
     protected Wait<WebDriver> explicitWait(int seconds) {
         return new WebDriverWait(driver, Duration.ofSeconds(seconds));
     }
@@ -32,5 +36,22 @@ public abstract class BasePage {
     public void waitForElementToBeVisible(By locator) {
         new WebDriverWait(driver, Duration.ofSeconds(2))
                 .until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public String loginByAPIAndRetrieveSessionToken() {
+        String token;
+
+        try {
+            token = ApiAuth.getAuthToken("admin@practicesoftwaretesting.com", "welcome01");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return token;
+    }
+
+    public void setSessionTokenInBrowser(String sessionToken) {
+        ((JavascriptExecutor) driver).executeScript(
+                "window.localStorage.setItem('auth-token', arguments[0]);", sessionToken);
     }
 }
