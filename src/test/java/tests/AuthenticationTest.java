@@ -48,7 +48,9 @@ public class AuthenticationTest extends BaseTest {
         );
     }
 
+    //Run tests for each position of the stream
     @ParameterizedTest(name = "Login as {0}")
+    //Receive the test data from the previous stream
     @MethodSource("usersToTest")
     public void doLoginProcessWithUsers(User user, String expectedPath) {
         HomePage homePage = new HomePage(driver);
