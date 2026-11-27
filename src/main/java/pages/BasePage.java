@@ -1,6 +1,7 @@
 package pages;
 
 import helpers.ApiAuth;
+import models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -38,15 +39,14 @@ public abstract class BasePage {
                 .until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
-    public String loginByAPIAndRetrieveSessionToken() {
+    public String loginByAPIAndRetrieveSessionToken(User user) {
         String token;
 
         try {
-            token = ApiAuth.getAuthToken("admin@practicesoftwaretesting.com", "welcome01");
+            token = ApiAuth.getAuthToken(user.email(), user.password());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
         return token;
     }
 

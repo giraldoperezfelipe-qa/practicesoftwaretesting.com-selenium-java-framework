@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.http.*;
 
+import static constants.Constants.USER_LOGIN_API_PATH;
+import static helpers.GetConfigProperties.getBaseUrl;
+
 public class ApiAuth {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -14,7 +17,7 @@ public class ApiAuth {
                 java.util.Map.of("email", email, "password", password));
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.practicesoftwaretesting.com/users/login"))
+                .uri(URI.create(getBaseUrl() + USER_LOGIN_API_PATH))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
