@@ -2,6 +2,7 @@ package pages.components;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.BasePage;
 
 public class NavigationMenu extends BasePage {
@@ -14,5 +15,10 @@ public class NavigationMenu extends BasePage {
 
     public String retrieveUsernameInMenu() {
         return driver.findElement(usernameInMenu).getText();
+    }
+
+    public void clickLoginButton() {
+        explicitWait().until(ExpectedConditions.visibilityOfElementLocated(loginButton));
+        driver.findElement(loginButton).click();
     }
 }

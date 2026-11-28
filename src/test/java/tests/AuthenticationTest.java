@@ -2,10 +2,10 @@ package tests;
 
 import driver.BaseTest;
 import models.User;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import pages.AuthenticationPage;
 import pages.DashboardPage;
 import pages.HomePage;
 import pages.components.NavigationMenu;
@@ -65,5 +65,17 @@ public class AuthenticationTest extends BaseTest {
                 getCurrentURL(), expectedPath, URL_NOT_CONTAINED_ERROR + getCurrentURL());
         assertStringEqualsOtherString(
                 user.name(), navigationMenu.retrieveUsernameInMenu(), USERNAME_DOES_NOT_MATCH);
+    }
+
+    public void checkLoginFormErrors() {
+        HomePage homePage = new HomePage(driver);
+        AuthenticationPage authenticationPage = new AuthenticationPage(driver);
+        DashboardPage dashboardPage = new DashboardPage(driver);
+        NavigationMenu navigationMenu = new NavigationMenu(driver);
+
+        homePage.goToHomePage();
+        navigationMenu.clickLoginButton();
+        authenticationPage.waitForLoginFormToBeVisible();
+        authenticationPage.fillAndSendLoginForm("email", "password");
     }
 }
